@@ -1,6 +1,5 @@
 version: 2
   jobs:
-    build:
       working_directory: /dockerapp
         docker:
             - image: docker:17.05.0-ce-git
@@ -17,4 +16,11 @@ version: 2
           command: |
             docker-compose up -d
             docker-compose run dockerapp python test.py
-    
+    deployment:
+    hub:
+    commands:
+          command: |
+          docker login -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD 
+          docker tag dockerapp_dockerapp $DOCKER_HUB_USER_ID/dockerapp:$CIRCLE_SHA1
+          docker tag dockerapp_dockerapp $DOCKER_HUB_USER_ID/dockerapp:latest
+          docker push $DOCKER_HUB_USER_ID/dockerapp:$CIRCLE_SHA1
