@@ -1,14 +1,13 @@
-
-version: 2 
-  jobs: 
-   build: 
-      working_directory: /dockerapp
-        docker: 
-            - image: docker:17.05.0-ce-git
-    steps: 
+version: 2
+jobs:
+  build:
+    working_directory: /dockerapp
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
       - checkout
       - setup_remote_docker
-      - run: 
+      - run:
           name: Install dependencies
           command: |
             apk add --no-cache py-pip=9.0.0-r1
@@ -18,10 +17,11 @@ version: 2
           command: |
             docker-compose up -d
             docker-compose run dockerapp python test.py
-    - deploy:
-    name: Application deployment to docker hub
+      - deploy:
+          name: Push application Docker image
           command: |
-          docker login -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD 
-          docker tag dockerapp_dockerapp $DOCKER_HUB_USER_ID/dockerapp:$CIRCLE_SHA1
-          docker tag dockerapp_dockerapp $DOCKER_HUB_USER_ID/dockerapp:latest
-          docker push $DOCKER_HUB_USER_ID/dockerapp:$CIRCLE_SHA1
+            docker login -e $DOCKER_HUB_EMAIL -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD
+            docker tag dockerapp_dockerapp $DOCKER_HUB_USER_ID/dockerapp:$CIRCLE_SHA1
+            docker tag dockerapp_dockerapp $DOCKER_HUB_USER_ID/dockerapp:latest
+            docker push $DOCKER_HUB_USER_ID/dockerapp:$CIRCLE_SHA1
+            docker push $DOCKER_HUB_USER_ID/dockerapp:latest
