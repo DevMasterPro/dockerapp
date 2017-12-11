@@ -18,7 +18,6 @@ jobs:
             docker-compose up -d
             docker-compose run dockerapp python test.py
       - deploy:
-          name: push application docker images
         - run:
           command: |
           docker login -u $DOCKER_HUB_USER_ID -p $DOCKER_HUB_PWD 
