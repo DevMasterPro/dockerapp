@@ -6,14 +6,14 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                bash 'apk add --no-cache py-pip=9.0.0-r1'
-                bash 'pip install docker-compose==1.15.0'
+                sh 'apk add --no-cache py-pip=9.0.0-r1'
+                sh 'pip install docker-compose==1.15.0'
             }
         }
         stage('Test') {
             steps {
-               bash 'docker-compose up -d'
-               bash 'docker-compose run dockerapp python test.py'
+               sh 'docker-compose up -d'
+               sh 'docker-compose run dockerapp python test.py'
             }
         }
         stage('Deploy') {
