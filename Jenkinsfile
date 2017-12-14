@@ -1,6 +1,6 @@
 pipeline {
     agent {
-        docker { image 'docker:17.05.0-ce-git' }
+     dockerfile true 
     }
 
     stages {
