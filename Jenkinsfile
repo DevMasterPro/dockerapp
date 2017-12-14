@@ -6,6 +6,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
+                
                 sh 'apk add --no-cache py-pip=9.0.0-r1'
                 sh 'pip install docker-compose==1.15.0'
             }
